@@ -13,6 +13,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
+    @property
     def post_count(self):
         return self.post_set.count()
     
@@ -32,6 +33,19 @@ class Post(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(blank=True, unique=True)
     
+    @property
+    def comment_count(self):
+        return self.comment_set.count()
+    @property
+    def like_count(self):
+        return self.like_set.count()
+    @property
+    def postview_count(self):
+        return self.postview_set.count()
+    @property
+    def badpostwarning_count(self):
+        return self.badpostwarning_set.count()
+    
     def __str__(self):
         return self.title
 class Comment(models.Model):
@@ -42,6 +56,7 @@ class Comment(models.Model):
     
     def __str__(self):
         return self.user.username
+    
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
