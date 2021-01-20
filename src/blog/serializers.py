@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, PostView, Comment, Category, Like, BadPostWarning, User
+from .models import Post, PostView, Comment, Category, Like, BadPostWarning, User, CommentLike, BadCommentWarning
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class CommentSerializer(serializers.ModelSerializer):
     post = serializers.SerializerMethodField()
     class Meta:
         model = Comment
-        fields = ("user", "created_date", "post", "comment")
+        fields = ("user", "created_date", "post", "comment", "commentlike_count", "badcommentwarning_count")
     def get_user(self, obj):
         return f"{obj.user.username}/{obj.user.email}"
     def get_post(self, obj):
@@ -59,9 +59,26 @@ class BadPostSerializer(serializers.ModelSerializer):
     def get_user(self, obj):
         return f"{obj.user.username}/{obj.user.email}"
     def get_post(self, obj):
-        return obj.post.slug
-
+        return obj.post.slug        
         
+class CommentLikeSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    comment = serializers.SerializerMethodField()
+    class Meta:
+        model = Like
+        fields = ("user","comment")
+    def get_user(self, obj):
+        return f"{obj.user.username}/{obj.user.email}"
+    def get_comment(self, obj):
+        return obj.comment.id
         
-        
-        
+class BadCommentWarningSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    comment = serializers.SerializerMethodField()
+    class Meta:
+        model = BadCommentWarning
+        fields = ("user", "comment", "created_date")
+    def get_user(self, obj):
+        return f"{obj.user.username}/{obj.user.email}"
+    def get_comment(self, obj):
+        return obj.comment.id  

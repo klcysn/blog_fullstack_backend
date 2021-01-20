@@ -55,7 +55,13 @@ class Comment(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.user.username
+        return self.comment
+    @property
+    def commentlike_count(self):
+        return self.commentlike_set.count()
+    @property
+    def badcommentwarning_count(self):
+        return self.badcommentwarning_set.count()
     
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -81,3 +87,20 @@ class BadPostWarning(models.Model):
     
     def __str__(self):
         return f"{self.user.username} => {self.post.title}"
+    
+
+class CommentLike(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.comment.id
+    
+
+class BadCommentWarning(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.user.username} => {self.comment.id}"
