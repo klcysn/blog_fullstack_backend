@@ -12,6 +12,10 @@ class Category(models.Model):
         
     def __str__(self):
         return self.name
+    
+    def post_count(self):
+        return self.post_set.count()
+    
 class Post(models.Model):
     OPTIONS = (
         ("draft", "Draft"),
@@ -19,11 +23,11 @@ class Post(models.Model):
     )
     title = models.CharField(max_length=100)
     content = models.TextField()
-    media = models.CharField(max_length=5000)
+    media = models.CharField(max_length=5000, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, default="Hello")
+    created_date = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_date = models.DateTimeField(auto_now=True, blank=True)
     status = models.CharField(max_length=10, choices=OPTIONS, default="draft")
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(blank=True, unique=True)
@@ -61,4 +65,4 @@ class BadPostWarning(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.user.username + " >>>>> " + self.post.title
+        return f"{self.user.username} => {self.post.title}"
