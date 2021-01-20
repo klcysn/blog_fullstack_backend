@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, PostView, Comment, Category, Like, BadPostWarning
+from .models import Post, PostView, Comment, Category, Like, BadPostWarning, User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -10,7 +10,9 @@ class CategorySerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ("title", "content", "media", "category", "status", "post_count", "user", "created_date", "updated_date", "slug")
+        fields = ("title", "content", "media", "category", "status", "postview_count",
+                  "badpostwarning_count", "comment_count", "like_count", "user",
+                  "created_date", "updated_date", "slug")
 
 class PostViewSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,7 +31,7 @@ class LikeSerializer(serializers.ModelSerializer):
 
 class BadPostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Like
+        model = BadPostWarning
         fields = ("user","post", "comment", "created_date")
 
 
