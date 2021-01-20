@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .models import Post, PostView, Comment, Category, Like, BadPostWarning
-from .serializers import CategorySerializer, CommentSerializer, PostViewSerializer, PostSerializer, LikeSerializer, BadPostSerializer
+from .models import Post, PostView, Comment, Category, Like, BadPostWarning, CommentLike, BadCommentWarning
+from .serializers import CategorySerializer, CommentSerializer, PostViewSerializer, PostSerializer, LikeSerializer, BadPostSerializer, CommentLikeSerializer, BadCommentWarningSerializer
 
 
 class CategoryListView(generics.ListAPIView):
@@ -48,4 +48,23 @@ class BadPostCreateListView(generics.ListCreateAPIView):
         queryset = BadPostWarning.objects.all()
         post_id = self.kwargs["slug"]
         queryset = queryset.filter(post__slug = post_id)
+        return queryset
+    
+    
+class CommentLikeCreateListView(generics.ListCreateAPIView):
+    serializer_class = CommentLike
+    
+    def get_queryset(self):
+        queryset = CommentLike.objects.all()
+        comment_id  = self.kwargs["id"]
+        queryset = queryset.filter(comment__id = comment_id)
+        return queryset
+    
+class BadCommentCreateListView(generics.ListCreateAPIView):
+    serializer_class = BadCommentWarningSerializer
+    
+    def get_queryset(self):
+        queryset = BadCommentWarning.objects.all()
+        comment_id = self.kwargs["id"]
+        queryset = queryset.filter(comment__slug = comment_id)
         return queryset
