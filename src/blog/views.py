@@ -52,7 +52,7 @@ class BadPostCreateListView(generics.ListCreateAPIView):
     
     
 class CommentLikeCreateListView(generics.ListCreateAPIView):
-    serializer_class = CommentLike
+    serializer_class = CommentLikeSerializer
     
     def get_queryset(self):
         queryset = CommentLike.objects.all()
