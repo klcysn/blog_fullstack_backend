@@ -2,8 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from .models import Post, PostView, Comment, Category, Like, BadPostWarning, CommentLike, BadCommentWarning
 from .serializers import CategorySerializer, CommentSerializer, PostViewSerializer, PostSerializer, LikeSerializer, BadPostSerializer, CommentLikeSerializer, BadCommentWarningSerializer
-
-
+from .pagination import PostPagination
 class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
@@ -12,9 +11,11 @@ class CategoryListView(generics.ListAPIView):
 class PostCreateListView(generics.ListCreateAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
+    pagination_class = PostPagination
     
 class CommentCreateListView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
+    pagination_class = PostPagination
     
     def get_queryset(self):
         queryset = Comment.objects.all()
