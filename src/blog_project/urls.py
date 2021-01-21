@@ -20,5 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("blog.urls")),
     path('user/', include("users.urls")),
-    path('auth/', include('dj_rest_auth.urls'))
+    path('auth/', include('dj_rest_auth.urls')),
+    path('auth/logout/', include('dj_rest_auth.urls')),
+    path('auth/password/reset/', include('dj_rest_auth.urls')),
 ]
