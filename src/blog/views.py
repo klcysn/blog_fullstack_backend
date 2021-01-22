@@ -19,9 +19,26 @@ class PostCreateListView(generics.ListCreateAPIView):
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
     
+class PostDetailCreateListView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+    lookup_field = "slug"
+    
 class CommentCreateListView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     pagination_class = PostPagination
+    lookup_field = "slug"
+    # queryset = Comment.objects.all()
+    def get_queryset(self):
+        queryset = Comment.objects.all()
+        post_id = self.kwargs["slug"]
+        queryset = queryset.filter(post__slug=post_id)
+        return queryset
+
+class CommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = CommentSerializer
+    # lookup_field = "slug"
+    # queryset = Comment.objects.all()
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
     
@@ -44,6 +61,7 @@ class PostViewCreateListView(generics.ListCreateAPIView):
     
 class LikeCreateListView(generics.ListCreateAPIView):
     serializer_class = LikeSerializer
+    lookup_field = "slug"
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
     
@@ -52,7 +70,16 @@ class LikeCreateListView(generics.ListCreateAPIView):
         post_id  = self.kwargs["slug"]
         queryset = queryset.filter(post__slug = post_id)
         return queryset
+
+class LikeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = LikeSerializer
+    # lookup_field = "slug"
     
+    def get_queryset(self):
+        queryset = Like.objects.all()
+        post_id  = self.kwargs["slug"]
+        queryset = queryset.filter(post__slug = post_id)
+        return queryset
     
 class BadPostCreateListView(generics.ListCreateAPIView):
     serializer_class = BadPostSerializer
@@ -64,17 +91,36 @@ class BadPostCreateListView(generics.ListCreateAPIView):
         post_id = self.kwargs["slug"]
         queryset = queryset.filter(post__slug = post_id)
         return queryset
+
+class BadPostDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BadPostSerializer
+    
+    def get_queryset(self):
+        queryset = BadPostWarning.objects.all()
+        post_id = self.kwargs["slug"]
+        queryset = queryset.filter(post__slug = post_id)
+        return queryset
     
     
 class CommentLikeCreateListView(generics.ListCreateAPIView):
+    serializer_class = CommentLikeSerializer
+    lookup_field = "commentpk"
+    
+    def get_queryset(self):
+        queryset = CommentLike.objects.all()
+        comment_pk  = self.kwargs["commentpk"]
+        queryset = queryset.filter(comment__pk = comment_pk)
+        return queryset
+
+class CommentLikeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CommentLikeSerializer
     authentication_classes = [SessionAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
         queryset = CommentLike.objects.all()
-        comment_id  = self.kwargs["id"]
-        queryset = queryset.filter(comment__id = comment_id)
+        comment_pk  = self.kwargs["commentpk"]
+        queryset = queryset.filter(comment__pk = comment_pk)
         return queryset
     
 class BadCommentCreateListView(generics.ListCreateAPIView):
@@ -84,6 +130,14 @@ class BadCommentCreateListView(generics.ListCreateAPIView):
     
     def get_queryset(self):
         queryset = BadCommentWarning.objects.all()
-        comment_id = self.kwargs["id"]
-        queryset = queryset.filter(comment__slug = comment_id)
+        comment_pk = self.kwargs["commentpk"]
+        queryset = queryset.filter(comment__pk = comment_pk)
+        return queryset
+class BadCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BadCommentWarningSerializer
+    
+    def get_queryset(self):
+        queryset = BadCommentWarning.objects.all()
+        comment_pk = self.kwargs["commentpk"]
+        queryset = queryset.filter(comment__pk = comment_pk)
         return queryset
