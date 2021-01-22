@@ -16,4 +16,5 @@ urlpatterns = [
     path('comment-like-detail/<slug>/<commentpk>/<pk>/', CommentLikeDetailView.as_view(), name="comment-detail-like"),
     path('bad-commentwarning/<slug>/<commentpk>/', BadCommentCreateListView.as_view(), name="bad-comment"),
     path('bad-commentwarning-detail/<slug>/<commentpk>/<pk>/', BadCommentDetailView.as_view(), name="bad-comment-detail"),
+    
 ]
