@@ -22,11 +22,15 @@ class PostDetailCreateListView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
     lookup_field = "slug"
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
 class CommentCreateListView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
     pagination_class = PostPagination
     lookup_field = "slug"
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     # queryset = Comment.objects.all()
     def get_queryset(self):
         queryset = Comment.objects.all()
@@ -73,7 +77,8 @@ class LikeCreateListView(generics.ListCreateAPIView):
 class LikeDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = LikeSerializer
     # lookup_field = "slug"
-    
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_queryset(self):
         queryset = Like.objects.all()
         post_id  = self.kwargs["slug"]
@@ -93,7 +98,8 @@ class BadPostCreateListView(generics.ListCreateAPIView):
 
 class BadPostDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BadPostSerializer
-    
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_queryset(self):
         queryset = BadPostWarning.objects.all()
         post_id = self.kwargs["slug"]
@@ -104,7 +110,8 @@ class BadPostDetailView(generics.RetrieveUpdateDestroyAPIView):
 class CommentLikeCreateListView(generics.ListCreateAPIView):
     serializer_class = CommentLikeSerializer
     lookup_field = "commentpk"
-    
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_queryset(self):
         queryset = CommentLike.objects.all()
         comment_pk  = self.kwargs["commentpk"]
@@ -134,7 +141,8 @@ class BadCommentCreateListView(generics.ListCreateAPIView):
         return queryset
 class BadCommentDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BadCommentWarningSerializer
-    
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     def get_queryset(self):
         queryset = BadCommentWarning.objects.all()
         comment_pk = self.kwargs["commentpk"]
