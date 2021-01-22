@@ -13,7 +13,7 @@ urlpatterns = [
     path('bad-post/<slug>/', BadPostCreateListView.as_view(), name="bad-post"),
     path('bad-post-detail/<slug>/<pk>/', BadPostDetailView.as_view(), name="bad-post-detail"),
     path('comment-like/<slug>/<commentpk>/', CommentLikeCreateListView.as_view(), name="comment-like"),
-    path('comment-detail-like/<slug>/<commentpk>/<pk>/', CommentLikeDetailView.as_view(), name="comment-detail-like"),
+    path('comment-like-detail/<slug>/<commentpk>/<pk>/', CommentLikeDetailView.as_view(), name="comment-detail-like"),
     path('bad-commentwarning/<slug>/<commentpk>/', BadCommentCreateListView.as_view(), name="bad-comment"),
     path('bad-commentwarning-detail/<slug>/<commentpk>/<pk>/', BadCommentDetailView.as_view(), name="bad-comment-detail"),
 ]
