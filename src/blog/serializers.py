@@ -30,32 +30,32 @@ class PostViewSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
-    # post = serializers.SerializerMethodField()
+    # slug = serializers.SerializerMethodField()
     class Meta:
         model = Comment
-        fields = ("username", "user", "created_date", "post", "comment", "commentlike_count", "badcommentwarning_count")
+        fields = ("username", "user", "created_date", "pk", "id", "post", "comment", "commentlike_count", "badcommentwarning_count")
     def get_username(self, obj):
         return f"{obj.user.username}/{obj.user.email}"
-    # def get_post(self, obj):
+    # def get_slug(self, obj):
     #     return obj.post.slug
 
 
 class LikeSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
-    # post = serializers.SerializerMethodField()
+    slug = serializers.SerializerMethodField()
     class Meta:
         model = Like
-        fields = ("user","post", "username")
+        fields = ("user","post", "slug", "username", "pk")
     def get_username(self, obj):
         return f"{obj.user.username}/{obj.user.email}"
-    # def get_post(self, obj):
-    #     return obj.post.slug
+    def get_slug(self, obj):
+        return obj.post.slug
 class BadPostSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
     # post = serializers.SerializerMethodField()
     class Meta:
         model = BadPostWarning
-        fields = ("user", "username", "post", "comment", "created_date")
+        fields = ("user", "username", "post", "pk", "comment", "created_date")
     def get_username(self, obj):
         return f"{obj.user.username}/{obj.user.email}"
     # def get_post(self, obj):
@@ -63,22 +63,23 @@ class BadPostSerializer(serializers.ModelSerializer):
         
 class CommentLikeSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
-    # comment = serializers.SerializerMethodField()
+    commentpk = serializers.SerializerMethodField()
     class Meta:
-        model = Like
-        fields = ("user","username", "comment")
+        model = CommentLike
+        fields = ("user","username", "comment", "commentpk", "pk", "id")
     def get_username(self, obj):
         return f"{obj.user.username}/{obj.user.email}"
-    # def get_comment(self, obj):
-    #     return obj.comment.id
+    def get_commentpk(self, obj):
+        return obj.comment.pk
         
 class BadCommentWarningSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
-    # comment = serializers.SerializerMethodField()
+    commentpk = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
     class Meta:
         model = BadCommentWarning
-        fields = ("user", "username", "comment", "created_date")
-    def get_user(self, obj):
+        fields = ("user", "username", "pk", "comment", "commentpk", "created_date")
+    def get_username(self, obj):
         return f"{obj.user.username}/{obj.user.email}"
-    # def get_comment(self, obj):
-    #     return obj.comment.id  
+    def get_commentpk(self, obj):
+        return obj.comment.pk  

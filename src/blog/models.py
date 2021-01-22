@@ -94,7 +94,7 @@ class CommentLike(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     
     def __str__(self):
-        return str(self.comment.id)
+        return str(self.comment.user.username)
     
 
 class BadCommentWarning(models.Model):
