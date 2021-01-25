@@ -33,6 +33,9 @@ class Post(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(blank=True, unique=True)
     
+    class Meta:
+        ordering = ['-created_date']
+    
     @property
     def comment_count(self):
         return self.comment_set.count()
