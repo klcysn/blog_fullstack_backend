@@ -13,7 +13,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ("title", "content", "media", "category", "status", "postview_count",
                   "badpostwarning_count", "comment_count", "like_count", "user", "username",
-                  "created_date", "updated_date", "slug")
+                  "created_date", "updated_date","pk", "slug")
     def get_username(self, obj):
         return f"{obj.user.username}/{obj.user.email}"
 
